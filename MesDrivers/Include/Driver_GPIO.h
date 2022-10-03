@@ -11,7 +11,7 @@ typedef struct
 
 #define In_Floating 0x4 // a completer
 #define In_PullDown 0x8 // a completer
-#define In_PullUp 0x8 // a completer
+#define In_PullUp 0x9 // a completer
 #define In_Analog 0x0 // a completer
 #define Out_Ppull 0x2 // a completer
 #define Out_OD 0x6 // a completer
