@@ -37,4 +37,17 @@ void MyTimer_Base_Init (MyTimer_Struct_TypeDef * Timer );
 */
 void MyTimer_ActiveIT ( TIM_TypeDef * Timer , char Prio, void (* callback) ( void ) ) ;
 
+
+/**
+* @brief
+* @param .. .
+* @Note Active le channel spécifié su Timerr le timer spécifié
+* la gestion de la configuration I/O n ’ est pas faite dans cette fonction
+* ni le réglage de la période de la PWM (ARR , PSC )
+*/
+
+void MyTimer_PWM( TIM_TypeDef * Timer , char Channel ) ;
+
+void MyTimer_Ratio ( TIM_TypeDef * Timer , char Channel, char ratio ) ;
+
 #endif

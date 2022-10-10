@@ -38,7 +38,7 @@ void MyTimer_Base_Init (MyTimer_Struct_TypeDef * Timer ) {
 	Timer->Timer->ARR = Timer->ARR;
 	Timer->Timer->PSC = Timer->PSC;
 }
- 
+
 
 void MyTimer_ActiveIT ( TIM_TypeDef * Timer , char Prio, void (* callback)(void) ) {
 	Timer->DIER |= 0x1;
@@ -61,3 +61,80 @@ void MyTimer_ActiveIT ( TIM_TypeDef * Timer , char Prio, void (* callback)(void)
 		NVIC_SetPriority(TIM3_IRQn, Prio);
 	}
 }
+
+void MyTimer_PWM( TIM_TypeDef * Timer , char Channel ) {
+	if(Timer == TIM1){
+		if(Channel == 1){
+			Timer->CCMR1 |= 0x1 << 5 | 0x1 <<  6;
+			Timer->CCMR1 &= ~(0x1 << 4);
+			Timer->CCMR1 |= 0x1 << 3;
+			Timer->CCER |= 0x1;
+			Timer->CCER |= 0x1 << 2;
+		}
+		if(Channel == 2){
+			Timer->CCMR1 |= 0x1 << 14 | 0x1 <<  13;
+			Timer->CCMR1 &= ~(0x1 << 12);
+			Timer->CCMR1 |= 0x1 << 11 ;
+			Timer->CCER |= 0x1 << 4 ;
+			Timer->CCER |= 0x1 << 6;
+		}
+		if(Channel == 3){
+			Timer->CCMR2 |= 0x1 << 5 | 0x1 <<  6;
+			Timer->CCMR2 &= ~(0x1 << 4);		
+			Timer->CCMR2 |= 0x1 << 3;
+			Timer->CCER |= 0x1 << 8 ;
+			Timer->CCER |= 0x1 << 10;
+		}
+		if(Channel == 4){
+			Timer->CCMR2 |= 0x1 << 14 | 0x1 <<  13;
+			Timer->CCMR2 &= ~(0x1 << 12);
+			Timer->CCMR2 |= 0x1 << 11 ;
+			Timer->CCER |= 0x1 << 12 ;
+		}
+		Timer->BDTR |= 0x1 << 15;
+	}else{
+		if(Channel == 1){
+			Timer->CCMR1 |= 0x1 << 5 | 0x1 <<  6;
+			Timer->CCMR1 &= ~(0x1 << 4);
+			Timer->CCMR1 |= 0x1 << 3;
+			Timer->CCER |= 0x1;
+		}
+		if(Channel == 2){
+			Timer->CCMR1 |= 0x1 << 14 | 0x1 <<  13;
+			Timer->CCMR1 &= ~(0x1 << 12);
+			Timer->CCMR1 |= 0x1 << 11 ;
+			Timer->CCER |= 0x1 << 4 ;
+		}
+		if(Channel == 3){
+			Timer->CCMR2 |= 0x1 << 5 | 0x1 <<  6;
+			Timer->CCMR2 &= ~(0x1 << 4);		
+			Timer->CCMR2 |= 0x1 << 3;
+			Timer->CCER |= 0x1 << 8 ;
+		}
+		if(Channel == 4){
+			Timer->CCMR2 |= 0x1 << 14 | 0x1 <<  13;
+			Timer->CCMR2 &= ~(0x1 << 12);
+			Timer->CCMR2 |= 0x1 << 11 ;
+			Timer->CCER |= 0x1 << 12 ;
+		}
+	}
+	
+	Timer->CR1 |= 0x1 << 7;
+	Timer->EGR |= 0x1;
+}
+
+void MyTimer_Ratio ( TIM_TypeDef * Timer , char Channel, char ratio ) {
+	if(Channel == 1){
+			Timer->CCR1 = ratio * Timer->ARR / 100;
+		}
+		if(Channel == 2){
+			Timer->CCR2 = ratio * Timer->ARR / 100;
+		}
+		if(Channel == 3){
+			Timer->CCR3 = ratio * Timer->ARR / 100;
+		}
+		if(Channel == 4){
+			Timer->CCR4 = ratio * Timer->ARR / 100;
+		}
+}
+ 
